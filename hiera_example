@@ -1,0 +1,40 @@
+# Hiera config example
+
+## Common / environment
+
+icinga::nrpe_allowed_hosts:
+  - 127.0.0.1
+  - 100.10.20.9 # v-duliut01
+
+## Icinga server hiera
+
+########################
+# Icinga configuration #
+########################
+
+icinga::server: true
+
+profile_icinga::users:
+  inuits:
+    ensure: present
+    password: inuits
+    email: transics@example.org
+    can_submit_commands: 1
+
+profile_icinga::groups:
+  admins:
+    ensure: present
+    members: inuits
+
+profile_icinga::default_checks:
+    check_load:
+      check_command: check_nrpe_command!check_load
+    check_mem:
+      check_command: check_nrpe_command!check_mem
+
+profile_icinga::checks:
+  v-duliut01:
+    address: 100.10.20.9
+  v-dulidb01:
+    address: 100.10.20.24
+
